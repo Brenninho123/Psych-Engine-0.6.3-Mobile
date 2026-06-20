@@ -23,6 +23,13 @@ import sys.io.File;
 import sys.io.Process;
 #end
 
+#if android
+import flixel.input.android.FlxAndroidKey;
+import lime.system.System as LimeSystem;
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 using StringTools;
 
 class Main extends Sprite
@@ -92,6 +99,22 @@ class Main extends Sprite
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.showFPS;
 		}
+		#end
+
+		#if mobile
+		Lib.current.stage.align = "tl";
+		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		#end
+
+		#if android
+		// Prevent the OS back / menu keys from bypassing the in-game pause menu
+		FlxG.android.preventDefaultKeys = [FlxAndroidKey.BACK, FlxAndroidKey.MENU];
+
+		// Bootstrap the mods folder inside the app's external storage directory
+		// Path: /sdcard/Android/data/<package>/files/mods/
+		var modPath:String = LimeSystem.applicationStorageDirectory + 'mods';
+		if (!FileSystem.exists(modPath))
+			FileSystem.createDirectory(modPath);
 		#end
 
 		#if html5

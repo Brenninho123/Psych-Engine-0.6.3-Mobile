@@ -30,6 +30,15 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
+	// On Android, resolves to /sdcard/Android/data/<package>/files/ (accessible
+	// via file manager, no MANAGE_EXTERNAL_STORAGE permission required).
+	// On all other targets it's empty so existing relative paths work unchanged.
+	#if android
+	public static final storagePath:String = lime.system.System.applicationStorageDirectory;
+	#else
+	public static final storagePath:String = '';
+	#end
+
 	#if MODS_ALLOWED
 	public static var ignoreModFolders:Array<String> = [
 		'characters',
@@ -396,7 +405,7 @@ class Paths
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '') {
-		return 'mods/' + key;
+		return storagePath + 'mods/' + key;
 	}
 
 	inline static public function modsFont(key:String) {
@@ -466,7 +475,7 @@ class Paths
 	static public function pushGlobalMods() // prob a better way to do this but idc
 	{
 		globalMods = [];
-		var path:String = 'modsList.txt';
+		var path:String = storagePath + 'modsList.txt';
 		if(FileSystem.exists(path))
 		{
 			var list:Array<String> = CoolUtil.coolTextFile(path);
