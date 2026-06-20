@@ -49,16 +49,16 @@ jobs:
           ndk-version: r21e
           add-to-path: false
 
+      - name: Setup Lime Android Target
+        run: |
+          yes "" | haxelib run lime setup android
+
       - name: Configure Lime for Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
           haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config
-
-      - name: Setup Lime Android Target
-        run: |
-          printf 'y\n' | haxelib run lime setup android
 
       - name: Compile
         run: haxelib run lime build Project.xml android
