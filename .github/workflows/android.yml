@@ -64,7 +64,7 @@ jobs:
         run: echo "${{ github.run_id }}" > VERSION
 
       - name: Compile
-        run: haxelib run lime build android Project.xml --app-version="4.0.0-${{ github.run_id }}" -release
+        run: haxelib run lime build Project.xml android --app-version="4.0.0-${{ github.run_id }}" -release
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
